@@ -1,6 +1,5 @@
 # Sudoku Solver
 
-This program takes a sudoku board and solves it instantly. The user inputs their sudoku board into the system and upon running it, the program will output the solved sudoku board. The program is written in Python.
+This program takes a sudoku board and solves it instantly. The user inputs their sudoku board into the system and upon running it, the program will output the solved sudoku board. The program is written with Python, HTML, and CSS. It is available for on the site: http://thefblue.pythonanywhere.com/. 
 
-Currently, I am still working on developing a UI for the code so the user does not have to manually input their board into the program.
-As well, I am developing a way to determine if the inputted board is solvable or not.
+Clicking the solve button will solve the puzzle and clicking clear will clear the entire board.
