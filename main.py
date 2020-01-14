@@ -1,20 +1,5 @@
-# fix easier input
-# find out way to determine whether it is solvable or not
-
-board = [
-    [4,8,0,0,3,0,2,0,0],
-    [0,0,0,0,0,9,0,3,8],
-    [0,1,0,0,0,0,0,4,0],
-    [0,0,3,9,0,0,5,0,4],
-    [9,2,4,1,0,0,0,0,7],
-    [0,0,5,3,7,4,0,0,9],
-    [0,3,8,0,0,0,0,0,0],
-    [0,0,7,0,0,8,6,0,0],
-    [6,0,0,7,0,0,0,0,0]
-]
-
-
-def solve(bo):
+# function that uses recursion to solve the board
+def solve_board(bo):
     find = find_empty(bo)
     if not find:
         return True
@@ -25,14 +10,14 @@ def solve(bo):
         if valid(bo, i, (row, col)):
             bo[row][col] = i
 
-            if solve(bo):
+            if solve_board(bo):
                 return True
 
-            bo[row][col] = 0
+            bo[row][col] = ""
 
     return False
 
-
+# check is the give number is valid in the given position on the given board
 def valid(bo, num, pos):
     # Checks row
     for i in range(len(bo[0])):
@@ -56,31 +41,55 @@ def valid(bo, num, pos):
     return True
 
 
-def print_board(bo):
-    for i in range(len(bo)):
-        if i % 3 == 0 and i != 0:
-            print("- - - - - - - - - - - -")
-
-        for j in range(len(bo[0])):
-            if j % 3 == 0 and    j != 0:
-                print(" | ", end="")
-
-            if j == 8:
-                print(bo[i][j])
-            else:
-                print(str(bo[i][j]) + " ", end="")
-
-
+# finds empty squares in the board
 def find_empty(bo):
     for i in range(len(bo)):
         for j in range(len(bo[0])):
-            if bo[i][j] == 0:
+            if bo[i][j] == "":
                 return (i, j)  # row, col
 
     return None
 
 
-print_board(board)
-solve(board)
-print("________________________")
-print_board(board)
+
+# checks to see if the given board is valid
+def valid_board(bo):
+    # Checks row
+    for i in range(len(bo)):
+        row_list = []
+        for j in range(9):
+            if bo[i][j] != "":
+                row_list.append(bo[i][j])
+        row_set = set()
+        for elem in row_list:
+            if elem in row_set:
+                return False
+            else:
+                row_set.add(elem)
+
+    # Checks column
+    for i in range(9):
+        col_list = []
+        for j in range(9):
+            if bo[j][i] != "":
+                col_list.append(bo[j][i])
+        col_set = set()
+        for elem in col_list:
+            if elem in col_set:
+                return False
+            else:
+                col_set.add(elem)
+
+    # Checks boxes
+    boxes = [{} for i in range(9)]
+    for i in range(9):
+        for j in range(9):
+            if bo[i][j] != "":
+                box_ind = (i//3 * 3 + j//3)
+
+                boxes[box_ind][bo[i][j]] = boxes[box_ind].get(bo[i][j], 0) + 1
+                print(boxes)
+                if boxes[box_ind][bo[i][j]] > 1:
+                    return False
+
+    return True
