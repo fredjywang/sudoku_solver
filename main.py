@@ -17,7 +17,7 @@ def solve_board(bo):
 
     return False
 
-# check is the give number is valid in the given position on the given board
+# check is the given number is valid in the given position on the given board
 def valid(bo, num, pos):
     # Checks row
     for i in range(len(bo[0])):
@@ -54,6 +54,7 @@ def find_empty(bo):
 
 # checks to see if the given board is valid
 def valid_board(bo):
+    bo = int_board(bo)
     # Checks row
     for i in range(len(bo)):
         row_list = []
@@ -88,8 +89,16 @@ def valid_board(bo):
                 box_ind = (i//3 * 3 + j//3)
 
                 boxes[box_ind][bo[i][j]] = boxes[box_ind].get(bo[i][j], 0) + 1
-                print(boxes)
                 if boxes[box_ind][bo[i][j]] > 1:
                     return False
 
     return True
+
+# makes the board integers in case they are not
+def int_board(bo):
+    for i in range(9):
+        for j in range(9):
+            if bo[i][j] != "":
+                bo[i][j] = int(bo[i][j])
+
+    return bo
