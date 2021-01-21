@@ -1,7 +1,7 @@
 from flask import Flask, redirect, url_for, render_template, request, flash
 from main import solve_board, valid_board
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder="templates")
 
 @app.route("/")
 def index():
@@ -40,4 +40,4 @@ def home():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, threaded=True, port=5000)
