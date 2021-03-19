@@ -2,6 +2,11 @@
 <html>
 <head>
 	<title>Sudoku Solver</title>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
 <style>
 
 body {
@@ -13,7 +18,7 @@ body {
 /* Style the header */
 h1 { 
 	background-color:lightblue;
-	font-size: 65px; 
+	font-size: 52px; 
 	font-family: Georgia; 
 	text-align: center;
 	color: black;
@@ -83,12 +88,35 @@ input[type="submit"]:disabled {
 	background-color:lightblue;
 }
 
+/* Class input for the clear button */
+button {
+	color: black;
+	background-color: lightblue;
+	cursor: pointer;
+	width: 250px;
+	height: 3em;
+	margin: 0 auto;
+	border: none;
+	border-radius: 4px;
+}
+
+
+/* Class to format cell for user's name */
+.user-name{
+	border: solid thin;
+	height: 2em;
+	width: 15em;
+	text-align: center;
+	padding: 0; 
+}
+
 </style>
 </head>
 
 
 <body>
 <h1>Sudoku Solver</h1>
+<p id="welcome-message" style = "font-size: 20px; font-family: Georgia;"/>
 <br>
 <form>
 <table align="center">
@@ -196,12 +224,83 @@ input[type="submit"]:disabled {
 	</div>
 	<br>
 </form>
-<form action="{{url_for('home')}}" method="POST">
+<form action="{{url_for('index')}}" method="POST">
 		<div style="text-align: center;">
 			<input type="submit" value= "Clear" style = "font-size: 22px; font-family: Georgia;"></input>
 		</div>
-	</form>
+</form><br>
 
+<form action="{{url_for('index')}}" method="POST" onsubmit="updateName()">
+	<div style="text-align: center;">
+		<label for="user_name" style = "font-size: 22px; font-family: Georgia;">Enter your name:</label>
+		<input type="text" class="user-name" name="user_name" id="user_name" style = "font-size: 22px; font-family: Georgia;"></input>
+		<input type="submit" value="Submit" style = "font-size: 22px; font-family: Georgia;">
+		<button type="button" onclick="clearName()" style = "font-size: 22px; font-family: Georgia;">Clear Name</button>
+	</div>
+</form>
+
+<div class="container" style="text-align: center">
+	<a tabindex="0"
+	   class="btn btn-lg btn-primary" 
+	   role="button" 
+	   data-html="true" 
+	   data-toggle="popover"
+	   data-placement="top" 
+	   data-trigger="focus" 
+	   data-content="<p id='timer-display'>00:00</p>">Show timer</a>
+</div>
+
+<script>
+// to load the popover
+$(document).ready(function(){
+    $('[data-toggle="popover"]').popover();   
+});
+
+timer();
+
+if (localStorage.getItem("name") != null) {
+	document.getElementById("welcome-message").innerHTML = "Welcome back, " + localStorage.getItem("name") + "!";
+}
+
+function updateName() {
+	const user_name = document.getElementById("user_name").value;
+	localStorage.setItem("name", user_name);
+}
+
+function clearName() {
+	localStorage.removeItem("name");
+	location.replace(url_for('index'));
+}
+
+function timer() {
+	var sec = 0;
+	var mins = 0;
+    var timer = setInterval(function(){
+    	if (sec >= 60) {
+    		sec = sec - 60;
+    		mins++;
+    	}
+    	if (mins < 10) {
+ 	    	if (sec >= 10) {
+	    		document.getElementById('timer-display').innerHTML = '0' + mins + ':' + sec;
+	    	}
+	        else {
+	        	document.getElementById('timer-display').innerHTML = '0' + mins + ':0' + sec;
+	        }
+	    }
+	    else {
+	    	if (sec >= 10) {
+	    		document.getElementById('timer-display').innerHTML = mins + ':' + sec;
+	    	}
+	        else {
+	        	document.getElementById('timer-display').innerHTML = mins + ':0' + sec;
+	        }
+	    }
+        sec++;
+    }, 1000);
+}
+
+</script>
 
 </body>
 </html>

@@ -102,3 +102,4 @@ def int_board(bo):
                 bo[i][j] = int(bo[i][j])
 
     return bo
+

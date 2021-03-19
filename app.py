@@ -1,9 +1,10 @@
 from flask import Flask, redirect, url_for, render_template, request, flash
 from main import solve_board, valid_board
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder="templates")
+app.secret_key = "super secret key"
 
-@app.route("/")
+@app.route("/", methods=["POST", "GET"])
 def index():
 	return render_template("base.html")
 
@@ -22,6 +23,7 @@ def sud_data():
 		[request.form["63"],request.form["64"],request.form["65"],request.form["66"],request.form["67"],request.form["68"],request.form["69"],request.form["70"],request.form["71"]],
 		[request.form["72"],request.form["73"],request.form["74"],request.form["75"],request.form["76"],request.form["77"],request.form["78"],request.form["79"],request.form["80"]]
 		]
+
 		if valid_board(board):
 			solve_board(board)
 			print(board)
@@ -30,14 +32,8 @@ def sud_data():
 			# invalid board; error message appears
 			return redirect(url_for("index"))
 	else:
-		return redirect(url_for("index"))
-
-
-@app.route("/home", methods=["POST"])
-def home():
-	if request.method == "POST":
-		return render_template("base.html")
-
+		return redirect(url_for("index"))\
+		
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, threaded=True, port=5000)
